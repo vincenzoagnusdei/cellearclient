@@ -129,7 +129,7 @@ int RealtimeDataDialog::getData()
     mpdu->setCode(CoapPDU::COAP_GET);
     mpdu->setToken((uint8_t*)"\3\2\1\1",4);
     mpdu->setMessageID(0x0005);
-    mpdu->setURI((char*)"test",4);
+    mpdu->setURI((char*)"currenttemperature",18);
     mpdu->addOption(CoapPDU::COAP_OPTION_CONTENT_FORMAT,1,(uint8_t*)")");
 
     // send packet
@@ -200,4 +200,5 @@ void RealtimeDataDialog::showEvent( QShowEvent* event ) {
     {
         this->connectToRemote();
     }
+    this->getData();
 }
