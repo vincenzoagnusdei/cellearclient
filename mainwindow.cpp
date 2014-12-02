@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     mpRealtimeDataDlg = new RealtimeDataDialog(this);
     mpNetworkParamDialog = new NetworkParamDialog(this);
+    mptempGraphDialog = new TemperatureGraphicDialog();
 }
 
 MainWindow::~MainWindow()
@@ -17,6 +18,7 @@ MainWindow::~MainWindow()
     delete mpRealtimeDataDlg;
     delete mpNetworkParamDialog;
     delete ui;
+    delete mptempGraphDialog;
 
 }
 
@@ -34,4 +36,9 @@ void MainWindow::on_actionTemperature_triggered()
 FileHandler* MainWindow::getFileHanlder()
 {
     return &mFH;
+}
+
+void MainWindow::on_actionGraphicTemperature_triggered()
+{
+    mptempGraphDialog->exec();
 }

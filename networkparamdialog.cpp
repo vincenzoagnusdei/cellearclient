@@ -14,6 +14,7 @@ NetworkParamDialog::NetworkParamDialog(QWidget *parent) :
     ui->localIPAddressLE->setInputMask( "000.000.000.000" );
     ui->localPortLE->setInputMask("00000");
     ui->remotePortLE->setInputMask("00000");   
+    ui->serverPortLE->setInputMask("000000");
     this->initParameters();
 
 }
@@ -40,6 +41,8 @@ void NetworkParamDialog::on_buttonBox_accepted()
       listparameter.append("\n");
       listparameter.append(ui->remotePortLE->text());
       listparameter.append("\n");
+      listparameter.append(ui->serverPortLE->text());
+      listparameter.append("\n");
       mFH->writeParameters(&listparameter);
 
 
@@ -56,6 +59,7 @@ void NetworkParamDialog::initParameters(){
     ui->localIPAddressLE->setText(listparameter.at(FileHandler::LISTENADDRESS));
     ui->remotePortLE->setText(listparameter.at(FileHandler::REMOTEPORT));
     ui->localPortLE->setText(listparameter.at(FileHandler::LISTENPORT));
+    ui->serverPortLE->setText(listparameter.at(FileHandler::FILETRANSFERPORT));
 
 
 }

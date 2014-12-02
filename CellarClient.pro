@@ -25,14 +25,19 @@ SOURCES += main.cpp\
     filehandler.cpp \
     realtimedatadialog.cpp \
     nethelper.c \
-    connectwrapper.cpp
+    connectwrapper.cpp \
+    temperaturegraphicdialog.cpp \
+    xvaluesretriervers.cpp
 
 HEADERS  += mainwindow.h \
     networkparamdialog.h \
     filehandler.h \
     realtimedatadialog.h \
-    connectwrapper.h
+    connectwrapper.h \
+    temperaturegraphicdialog.h \
+    xvaluesretriervers.h
 
 FORMS    += mainwindow.ui \
     networkparamdialog.ui \
-    realtimedatadialog.ui
+    realtimedatadialog.ui \
+    temperaturegraphicdialog.ui

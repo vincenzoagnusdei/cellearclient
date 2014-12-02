@@ -12,6 +12,7 @@ public:
     static const QString LOOP_IP;
     static const QString LOCAL_PORT;
     static const QString REMOTE_PORT;
+    static const QString FILETRANSFER_PORT;
 
     FileHandler();
 
@@ -19,7 +20,7 @@ public:
     int readParameters(QStringList *vals);
     void initParameters(QString *val);
 
-    enum PARAMETER_ENUM {LISTENADDRESS,LISTENPORT, REMOTEADDRESS, REMOTEPORT};
+    enum PARAMETER_ENUM {LISTENADDRESS,LISTENPORT, REMOTEADDRESS, REMOTEPORT, FILETRANSFERPORT};
 
 
 

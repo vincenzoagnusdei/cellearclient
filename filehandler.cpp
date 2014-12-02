@@ -13,7 +13,7 @@ const QString FileHandler::PARAMETER_FILE = "parameters.txt";
 const QString FileHandler::LOOP_IP = "127.0.0.1";
 const QString FileHandler::LOCAL_PORT="10000";
 const QString FileHandler::REMOTE_PORT="9999";
-
+const QString FileHandler::FILETRANSFER_PORT="10000";
 
 FileHandler::FileHandler()
 {
@@ -107,6 +107,25 @@ void FileHandler::initParameters(QString *val)
     val->append("\n");
     val->append(REMOTE_PORT);
     val->append("\n");
+    val->append(FILETRANSFER_PORT);
+    val->append("\n");
 
 
 }
+
+QString FileHandler::getLocalPort()
+{
+
+}
+
+QString FileHandler::getRemotePort()
+{
+
+}
+
+QString FileHandler::getFileTransferPort()
+{
+
+}
+
+
