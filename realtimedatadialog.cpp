@@ -54,14 +54,12 @@ int RealtimeDataDialog::connectToRemote()
     char *listenAddressString;
     char *listenPortString;
     char *remoteAddressString;
-    char *remotePortString;
+    char *remotePortString;  
 
-    mpFH->readParameters(&parameters);
-
-    string listenadd = parameters.at(FileHandler::LISTENADDRESS).toUtf8().constData();
-    string listenport = parameters.at(FileHandler::LISTENPORT).toUtf8().constData();
-    string remoteadd = parameters.at(FileHandler::REMOTEADDRESS).toUtf8().constData();
-    string remoteport = parameters.at(FileHandler::REMOTEPORT).toUtf8().constData();
+    string listenadd = mpFH->getListenAddress().toUtf8().constData();
+    string listenport = mpFH->getListenPort().toUtf8().constData();
+    string remoteadd = mpFH->getRemoteAddress().toUtf8().constData();
+    string remoteport = mpFH->getRemotePort().toUtf8().constData();
 
     listenAddressString = (char *) listenadd.c_str();
     listenPortString = (char *) listenport.c_str();

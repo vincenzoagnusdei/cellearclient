@@ -8,8 +8,9 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+subdirs += qtftp
 
-unix:!macx: LIBS += -lcantcoap
+unix:!macx: LIBS += -lcantcoap -lQt5Ftp
 
 
 
@@ -27,7 +28,8 @@ SOURCES += main.cpp\
     nethelper.c \
     connectwrapper.cpp \
     temperaturegraphicdialog.cpp \
-    xvaluesretriervers.cpp
+    thresholdcrossingretriervers.cpp \
+    ftpclient.cpp
 
 HEADERS  += mainwindow.h \
     networkparamdialog.h \
@@ -35,7 +37,8 @@ HEADERS  += mainwindow.h \
     realtimedatadialog.h \
     connectwrapper.h \
     temperaturegraphicdialog.h \
-    xvaluesretriervers.h
+    thresholdcrossingretriervers.h \
+    ftpclient.h
 
 FORMS    += mainwindow.ui \
     networkparamdialog.ui \

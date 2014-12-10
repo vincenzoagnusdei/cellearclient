@@ -51,15 +51,13 @@ void NetworkParamDialog::on_buttonBox_accepted()
 
 void NetworkParamDialog::initParameters(){
 
-    QStringList listparameter;   
-    mFH = ((MainWindow *) this->parent())->getFileHanlder();
 
-    mFH->readParameters(&listparameter);
-    ui->remoteIPAddressLE->setText(listparameter.at(FileHandler::REMOTEADDRESS));
-    ui->localIPAddressLE->setText(listparameter.at(FileHandler::LISTENADDRESS));
-    ui->remotePortLE->setText(listparameter.at(FileHandler::REMOTEPORT));
-    ui->localPortLE->setText(listparameter.at(FileHandler::LISTENPORT));
-    ui->serverPortLE->setText(listparameter.at(FileHandler::FILETRANSFERPORT));
+    mFH = ((MainWindow *) this->parent())->getFileHanlder();    
+    ui->remoteIPAddressLE->setText(mFH->getRemoteAddress());
+    ui->localIPAddressLE->setText(mFH->getListenAddress());
+    ui->remotePortLE->setText(mFH->getRemotePort());
+    ui->localPortLE->setText(mFH->getListenPort());
+    ui->serverPortLE->setText(mFH->getFileTransferPort());
 
 
 }

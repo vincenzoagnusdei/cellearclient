@@ -6,6 +6,7 @@
 #include "realtimedatadialog.h"
 #include "filehandler.h"
 #include "temperaturegraphicdialog.h"
+#include "thresholdcrossingretriervers.h"
 
 
 namespace Ui {
@@ -34,6 +35,8 @@ private:
     RealtimeDataDialog *mpRealtimeDataDlg;
     FileHandler mFH;
     TemperatureGraphicDialog *mptempGraphDialog;
+    ThresholdCrossingRetriervers *mpXvalueRetriever;
+
 };
 
 #endif // MAINWINDOW_H

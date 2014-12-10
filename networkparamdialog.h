@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "filehandler.h"
 
+
 namespace Ui {
 class NetworkParamDialog;
 }
@@ -25,7 +26,7 @@ private slots:
 private:
     void initParameters();
     Ui::NetworkParamDialog *ui;
-    FileHandler *mFH;
+    FileHandler *mFH;   
 
 };
 
