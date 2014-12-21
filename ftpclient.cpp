@@ -4,7 +4,10 @@
 #include <QtNetwork>
 #include <mainwindow.h>
 #include <qftp/qftp.h>
-#include <thresholdcrossingretriervers.h>
+#include "thresholdcrossingretriervers.h"
+#include "infofiletodownload.h"
+
+
 
 
 FTPClient::FTPClient(QObject *parent) :
@@ -25,27 +28,75 @@ void FTPClient::run()
 
 
 
-void FTPClient::on_synchronize_file_transfer(QStringList fileinfo)
+void FTPClient::on_synchronize_files(QStringList fileinfo)
 {
-    // start from 1 to skip command
-
-     qDebug() << "FtpClient tid " << QThread::currentThreadId();
+    int idx;
+    QString ldatetime;
+    bool mustcallconnect=false;
 
     QStringList localFileInfo;
+    mpFH->getFileInfo(&localFileInfo);
+    mFiletodownload.clear();
 
-    if (mpFH->getFileInfo(&localFileInfo) == 1)
+
+
+    for (int i=0; i < fileinfo.size(); i+=2)
     {
-        // data present
+        if (localFileInfo.size() != 0)
+        {
+
+            // localFileInfo present
+            // get index of localfilename
+            idx=localFileInfo.indexOf(fileinfo.at(i));
+
+            if (idx != -1)
+            {
+                ldatetime = localFileInfo.at(idx+1);
+
+                InfoFileToDownload* info = new InfoFileToDownload();
+
+
+                info->setFileName(fileinfo.at(idx));
+                info->setDateTime(fileinfo.at(idx+1));
+
+                if (ldatetime.compare(fileinfo.at(idx+1)) !=0)
+                {
+                    info->setDownloadStatus(InfoFileToDownload::Tobedownloaded);
+                    mustcallconnect=true;
+
+                }
+                else
+                {
+                    info->setDownloadStatus(InfoFileToDownload::Toskip);
+                }
+
+                   mFiletodownload.append(info);
+            }
+        }
+        else
+        {
+            // first time remote file are retrieved
+
+            InfoFileToDownload* info = new InfoFileToDownload();
+            info->setFileName(fileinfo.at(i));
+            info->setDateTime(fileinfo.at(i+1));
+            info->setDownloadStatus(InfoFileToDownload::Tobedownloaded);
+            mFiletodownload.append(info);
+            mustcallconnect=true;
+
+        }
+
+
     }
-    else
+
+    if (mustcallconnect)
     {
-        // data not present, retrieve all the files
+        mpFH->removeFileInfo();
         this->connectToFtp();
-        this->getRemoteFile(fileinfo[1]);
     }
-
 
 }
+
 
 
 void FTPClient::connectToFtp()
@@ -84,6 +135,9 @@ void FTPClient::ftpCommandFinished(int, bool error)
 
     if (mpFtp->currentCommand() == QFtp::Login)
     {
+
+        this->downloadNextFile();
+
         return;
     }
 
@@ -92,15 +146,32 @@ void FTPClient::ftpCommandFinished(int, bool error)
     {
         if (error) {
             qDebug() << "Canceled download";
-
-
         }
         else
         {
+          mpInfo->setDownloadStatus(InfoFileToDownload::Downloaded);
           qDebug() << "file download terminated";
-          mpFileToDownload->flush();
-          mpFileToDownload->close();
-          delete mpFileToDownload;
+          mpFileToDownload.flush();
+          mpFileToDownload.close();
+          QString infofile;
+          infofile.append(mpInfo->getFileName());
+          infofile.append(FileHandler::SEPARATOR);
+          infofile.append(mpInfo->getDateTime());
+          infofile.append(FileHandler::SEPARATOR);
+          mpFH->writeFileInfo(&infofile);          
+
+          if (this->getNextFileNameToDownload() == NULL)
+          {
+              // no more files to download
+              // disconnect ftp
+              this->disconnectFromFTP();
+          }
+          else
+          {
+            this->downloadNextFile();
+          }
+
+
         }
 
     } else if (mpFtp->currentCommand() == QFtp::List) {
@@ -136,15 +207,74 @@ void FTPClient::disconnectFromFTP()
 void FTPClient::getRemoteFile(QString filename)
 {
 
-    mpFileToDownload = new QFile(filename);
-    if (!mpFileToDownload->open(QIODevice::WriteOnly)) {
+    mpFileToDownload.setFileName(filename);
+    if (!mpFileToDownload.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         qDebug() << "Unable to save the file";
 
-        delete mpFileToDownload;
         return;
     }
 
-    mpFtp->get(filename, mpFileToDownload);
+    mpFtp->get(filename, &mpFileToDownload);
 
+
+}
+
+
+/**
+<Retrieve from remote host>
+
+<Retrieve from remote host. The name of the file to dowload>
+<is store in the mFiletodownload List>
+
+@param
+@return True if a download is started.
+@return False if there is no file to download.
+
+*/
+
+bool FTPClient::downloadNextFile()
+{
+    this->mpInfo = NULL;
+    bool ret=false;
+
+
+    foreach (InfoFileToDownload *i, mFiletodownload )
+    {
+        if (i->getDownloadStatus() == InfoFileToDownload::Tobedownloaded)
+        {
+
+            this->mpInfo = i;
+            qDebug() << this->mpInfo->getFileName();
+            break;
+        }
+    }
+
+    if (this->mpInfo!= NULL)
+    {
+        this->getRemoteFile((this->mpInfo)->getFileName());
+        ret=true;
+    }
+
+    return ret;
+}
+
+
+
+QString FTPClient::getNextFileNameToDownload()
+{
+    QString filename=NULL;
+
+    foreach (InfoFileToDownload *i, mFiletodownload )
+    {
+        if (i->getDownloadStatus() == InfoFileToDownload::Tobedownloaded)
+        {
+
+            filename = i->getFileName();
+
+            break;
+        }
+    }
+
+    return filename;
 
 }

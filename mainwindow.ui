@@ -39,7 +39,7 @@
     <property name="title">
      <string>Graphics</string>
     </property>
-    <addaction name="actionGraphicTemperature"/>
+    <addaction name="actionGraphic"/>
    </widget>
    <addaction name="menuConfiguration"/>
    <addaction name="menuRealtime_Measure"/>
@@ -64,9 +64,9 @@
     <string>Temperature</string>
    </property>
   </action>
-  <action name="actionGraphicTemperature">
+  <action name="actionGraphic">
    <property name="text">
-    <string>Temperature</string>
+    <string>Graphic</string>
    </property>
   </action>
  </widget>

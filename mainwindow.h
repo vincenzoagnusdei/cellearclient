@@ -5,8 +5,8 @@
 #include "networkparamdialog.h"
 #include "realtimedatadialog.h"
 #include "filehandler.h"
-#include "temperaturegraphicdialog.h"
 #include "thresholdcrossingretriervers.h"
+#include "graphicdatadialog.h"
 
 
 namespace Ui {
@@ -26,16 +26,17 @@ public:
 
 private slots:
     void on_actionNetwork_Parameter_triggered();
-    void on_actionTemperature_triggered();
-    void on_actionGraphicTemperature_triggered();
+    void on_actionTemperature_triggered();    
+    void on_actionGraphic_triggered();
 
 private:
     Ui::MainWindow *ui;
     NetworkParamDialog *mpNetworkParamDialog;
     RealtimeDataDialog *mpRealtimeDataDlg;
-    FileHandler mFH;
-    TemperatureGraphicDialog *mptempGraphDialog;
+
+    FileHandler mFH;   
     ThresholdCrossingRetriervers *mpXvalueRetriever;
+    GraphicDataDialog mGraphicDataDialog;
 
 };
 

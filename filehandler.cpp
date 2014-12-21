@@ -1,12 +1,10 @@
 #include <QtNetwork/QNetworkInterface>
 #include <QtNetwork/QHostAddress>
 #include <QtNetwork/QHostInfo>
-
+#include <QDateTime>
 #include <QFile>
 #include <QFileInfo>
 #include "filehandler.h"
-
-
 
 
 const QString FileHandler::PARAMETER_FILE = "parameters.txt";
@@ -16,17 +14,21 @@ const QString FileHandler::REMOTE_PORT="9999";
 const QString FileHandler::FILETRANSFER_PORT="9998";
 const QString FileHandler::FILE_DIRECTORY="/home/cellarmonitor/client/";
 const QString FileHandler::INFO_FILE="infofile.txt";
+const QString FileHandler::SEPARATOR=",";
+const QString FileHandler::SEPARATOR1=" ";
+const QString FileHandler::SEPARATOR2=".";
+const QString FileHandler::TERMINATOR="\n";
 
 
 FileHandler::FileHandler()
 {
     QStringList val;
     this->readParameters(&val);
-    this->mlistenAddress=val.at(LISTENADDRESS);
-    this->mlistenPort=val.at(LISTENPORT);
-    this->mremoteAddress=val.at(REMOTEADDRESS);
-    this->mremotePort=val.at(REMOTEPORT);
-    this->mfileTransferPort=val.at(FILETRANSFERPORT);
+    this->mlistenAddress=val.at(listenaddress);
+    this->mlistenPort=val.at(listenport);
+    this->mremoteAddress=val.at(remoteaddress);
+    this->mremotePort=val.at(remoteport);
+    this->mfileTransferPort=val.at(filetransferport);
 
 }
 
@@ -111,15 +113,15 @@ void FileHandler::initParameters(QString *val)
     }
 
     val->append(ip);
-    val->append("\n");
+    val->append(TERMINATOR);
     val->append(LOCAL_PORT);
-    val->append("\n");
+    val->append(TERMINATOR);
     val->append(ip);
-    val->append("\n");
+    val->append(TERMINATOR);
     val->append(REMOTE_PORT);
-    val->append("\n");
+    val->append(TERMINATOR);
     val->append(FILETRANSFER_PORT);
-    val->append("\n");
+    val->append(TERMINATOR);
 
 
 }
@@ -189,10 +191,12 @@ int FileHandler::getFileInfo(QStringList *infolist)
 
     }
 
-    *infolist = info.split('\n');
+    *infolist = info.split(SEPARATOR);
+    // remove last element which is empty
+    infolist->removeLast();
     file.close();
 
-    return 0;
+    return 1;
 }
 
 
@@ -210,23 +214,37 @@ int FileHandler::getFileInfo(QStringList *infolist)
 @return 1 Error.
 */
 
-int FileHandler::writeFileInfo(QStringList infolist)
+int FileHandler::writeFileInfo(QString *info)
 {
 
     QFile file(INFO_FILE);
-    if (!file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text))
+    if (!file.open(QFile::WriteOnly | QFile::Text | QFile::Append))
     {
         qDebug() << "Error writing file " << INFO_FILE;
         return -1;
     }
 
     QTextStream datastream(&file);
-    datastream << &infolist;
+
+    datastream << *info;
+
     file.flush();
     file.close();
 
     return 0;
 }
 
+int FileHandler::removeFileInfo()
+{
+
+    QFile file(INFO_FILE);
+    if (!file.remove())
+    {
+        qDebug() << "Error removing file " << INFO_FILE;
+        return -1;
+    }
+
+    return 0;
+}
 
 

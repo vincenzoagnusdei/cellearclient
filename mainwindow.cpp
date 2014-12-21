@@ -10,8 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QDir::setCurrent(FileHandler::FILE_DIRECTORY);
     ui->setupUi(this);
     mpRealtimeDataDlg = new RealtimeDataDialog(this);
-    mpNetworkParamDialog = new NetworkParamDialog(this);
-    mptempGraphDialog = new TemperatureGraphicDialog();
+    mpNetworkParamDialog = new NetworkParamDialog(this);    
     mpXvalueRetriever = new ThresholdCrossingRetriervers(this);
 }
 
@@ -20,8 +19,7 @@ MainWindow::~MainWindow()
 
     delete mpRealtimeDataDlg;
     delete mpNetworkParamDialog;
-    delete ui;
-    delete mptempGraphDialog;
+    delete ui;   
 
 }
 
@@ -41,7 +39,8 @@ FileHandler* MainWindow::getFileHanlder()
     return &mFH;
 }
 
-void MainWindow::on_actionGraphicTemperature_triggered()
+
+void MainWindow::on_actionGraphic_triggered()
 {
-    mptempGraphDialog->exec();
+        mGraphicDataDialog.exec();
 }

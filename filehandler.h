@@ -8,6 +8,18 @@ class FileHandler
 {
 public:
 
+    FileHandler();
+
+    int writeParameters(QString *thresholds=NULL);
+    int writeFileInfo(QString *infolist);
+    int getFileInfo(QStringList *infolist);
+    int removeFileInfo();
+    QString getListenPort();
+    QString getRemotePort();
+    QString getFileTransferPort();
+    QString getListenAddress();
+    QString getRemoteAddress();
+
     static const QString PARAMETER_FILE;
     static const QString LOOP_IP;
     static const QString LOCAL_PORT;
@@ -15,24 +27,13 @@ public:
     static const QString FILETRANSFER_PORT;
     static const QString FILE_DIRECTORY;
     static const QString INFO_FILE;
+    static const QString SEPARATOR;
+    static const QString TERMINATOR;
+    static const QString SEPARATOR1;
+    static const QString SEPARATOR2;
 
-    FileHandler();
 
-    int writeParameters(QString *thresholds=NULL);
-    int writeFileInfo(QStringList infolist);
-    int getFileInfo(QStringList *infolist);
-
-    enum PARAMETER_ENUM {LISTENADDRESS,LISTENPORT, REMOTEADDRESS, REMOTEPORT, FILETRANSFERPORT};
-
-    // enum FILE_INFO_ENUM {HUMIDITY_TH, HUMIDITY_VAL, TEMPERATURE_TH, TEMPERATURE_VAL, LUMINOSITY_TH, LUMINOSITY_VAL };
-    enum FILE_INFO_ENUM { TEMPERATURE_X_TH, TEMPERATURE_VALUE};
-
-    QString getListenPort();
-    QString getRemotePort();
-    QString getFileTransferPort();
-    QString getListenAddress();
-    QString getRemoteAddress();
-
+    enum parameter_enum {listenaddress,listenport, remoteaddress, remoteport, filetransferport};
 
 
 private:
@@ -41,8 +42,10 @@ private:
     QString mremoteAddress;
     QString mremotePort;
     QString mfileTransferPort;
+
     void initParameters(QString *val);
-    int readParameters(QStringList *vals);
+    int readParameters(QStringList *vals);   
+
 
 
 };

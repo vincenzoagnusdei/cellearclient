@@ -1,18 +1,35 @@
 #ifndef INFOFILETODOWNLOAD_H
 #define INFOFILETODOWNLOAD_H
+#include <QString>
 
-#include <QObject>
 
-class InfoFileToDownload : public QObject
+class InfoFileToDownload
 {
-    Q_OBJECT
+
 public:
-    explicit InfoFileToDownload(QObject *parent = 0);
+    InfoFileToDownload();
+    ~InfoFileToDownload();
 
-signals:
+    // this flag will be update after the download
+    // to have info about success or failure
 
-public slots:
+    enum DownloadStatus {Tobedownloaded, Toskip, Downloaded, Failed};
+    void setFileName(QString);
+    QString getFileName();
+    void setDateTime(QString);
+    QString getDateTime();
+    void setDownloadStatus(DownloadStatus);
+    DownloadStatus getDownloadStatus();
+
+
+private:
+    QString mFileName;
+    QString mDateTime;
+    DownloadStatus mDownloadStatus;
+
+
 
 };
 
 #endif // INFOFILETODOWNLOAD_H
+

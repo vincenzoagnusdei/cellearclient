@@ -22,13 +22,14 @@ public:
     ~ThresholdCrossingRetriervers();
     static const QString GET_FILE_LIST;
     static const QString GET_DATETIME;
+    QStringList mtokens;
 
     FileHandler * getFileHandler();
 
 
 signals:
 
-    void file_list(QStringList filelist);
+    void file_list(QStringList fileinfo);
 
 public slots:
     void logError(QAbstractSocket::SocketError socketEvent);

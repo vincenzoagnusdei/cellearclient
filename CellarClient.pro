@@ -27,20 +27,30 @@ SOURCES += main.cpp\
     realtimedatadialog.cpp \
     nethelper.c \
     connectwrapper.cpp \
-    temperaturegraphicdialog.cpp \
     thresholdcrossingretriervers.cpp \
-    ftpclient.cpp
+    ftpclient.cpp \
+    infofiletodownload.cpp \
+    datasensorparser.cpp \
+    measure.cpp \
+    graphicdatadialog.cpp \
+    labelgraphicitem.cpp \
+    graphicitem.cpp
 
 HEADERS  += mainwindow.h \
     networkparamdialog.h \
     filehandler.h \
     realtimedatadialog.h \
     connectwrapper.h \
-    temperaturegraphicdialog.h \
     thresholdcrossingretriervers.h \
-    ftpclient.h
+    ftpclient.h \
+    infofiletodownload.h \
+    datasensorparser.h \
+    measure.h \
+    graphicdatadialog.h \
+    labelgraphicitem.h \
+    graphicitem.h
 
 FORMS    += mainwindow.ui \
     networkparamdialog.ui \
     realtimedatadialog.ui \
-    temperaturegraphicdialog.ui
+    graphicdatadialog.ui

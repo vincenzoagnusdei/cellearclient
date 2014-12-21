@@ -28,13 +28,10 @@ ThresholdCrossingRetriervers::ThresholdCrossingRetriervers(QObject *parent) :
      connect(mpTcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
              this, SLOT(logError(QAbstractSocket::SocketError)));
 
-     connect(this, SIGNAL(file_list(QStringList)), mpFtpClient, SLOT(on_synchronize_file_transfer(QStringList)),
+     connect(this, SIGNAL(file_list(QStringList)), mpFtpClient, SLOT(on_synchronize_files(QStringList)),
              Qt::QueuedConnection);
 
      this->connectToRemoteServer();
-
-
-
 
 }
 
@@ -91,14 +88,17 @@ void ThresholdCrossingRetriervers::readData()
    QTcpSocket* socket = (QTcpSocket*)sender();
    while (socket->canReadLine())
    {
-       QStringList tokens = QString(socket->readLine()).split(QRegExp("[ \r\n][ \r\n]*"));
+       mtokens = QString(socket->readLine()).split(QRegExp("[ \r\n][ \r\n]*"));
 
-       for (int i=0; i < tokens.size() ; i++)
+       for (int i=0; i < mtokens.size() ; i++)
        {
-           qDebug() << tokens[i];
+           qDebug() << mtokens[i];
        }
 
-       emit file_list(tokens);
+       mtokens.removeLast(); // remove last empty element
+       mtokens.removeFirst(); // remove commandname
+       emit file_list(mtokens);
+
        qDebug() << "Thresholdcrossinretriever tid " << QThread::currentThreadId();
 
    }
